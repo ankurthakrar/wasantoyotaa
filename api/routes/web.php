@@ -79,5 +79,8 @@ $router->post('suffixOldNewList', 'MasterController@getSuffixOldNewList');
 $router->post('deleteSuffixOldNew', 'MasterController@deleteSuffixOldNewDetails');
 
 
-
+$router->post('add-link', 'MasterController@addLink'); 
+$router->post('link-list', 'MasterController@getLinkList'); 
+$router->post('link-detail', 'MasterController@linkDetail'); 
+$router->post('update-link', 'MasterController@updateLink'); 
 

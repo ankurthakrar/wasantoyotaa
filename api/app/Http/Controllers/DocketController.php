@@ -97,6 +97,7 @@ class DocketController extends Controller
                 'tcs' =>$inputDocketParameters["tcs"],
                 'fast_tag' =>$inputDocketParameters["fast_tag"],
                 'extended_warrnaty' =>$inputDocketParameters["extended_warrnaty"],
+                'vas' =>$inputDocketParameters["vas"],
                 'other_charges' =>$inputDocketParameters["other_charges"],
                 'discount' =>$inputDocketParameters["discount"],
                 'discount_approve' =>$inputDocketParameters["discount_approve"],
@@ -281,6 +282,7 @@ class DocketController extends Controller
             'docket_details.tcs as tcs',
             'docket_details.fast_tag as fast_tag',
             'docket_details.extended_warrnaty as extended_warrnaty',
+            'docket_details.vas as vas',
             'docket_details.other_charges as other_charges',
             'docket_details.discount as discount',
             'docket_details.discount_approve as discount_approve',
@@ -519,6 +521,7 @@ class DocketController extends Controller
                 $inputDocketParameters["depot_charges"] = (isset($inputDocketParameters['depot_charges']) ) ? $inputDocketParameters['depot_charges'] :$docketDetails['depot_charges'];
                 $inputDocketParameters["tcs"] = (isset($inputDocketParameters['tcs']) ) ? $inputDocketParameters['tcs'] :$docketDetails['tcs'];
                 $inputDocketParameters["extended_warrnaty"] = (isset($inputDocketParameters['extended_warrnaty']) ) ? $inputDocketParameters['extended_warrnaty'] :$docketDetails['extended_warrnaty'];
+                $inputDocketParameters["vas"] = (isset($inputDocketParameters['vas']) ) ? $inputDocketParameters['vas'] :$docketDetails['vas'];
                 $inputDocketParameters["other_charges"] = (isset($inputDocketParameters['other_charges']) ) ? $inputDocketParameters['other_charges'] :$docketDetails['other_charges'];
                 $inputDocketParameters["discount"] = (isset($inputDocketParameters['discount']) ) ? $inputDocketParameters['discount'] :$docketDetails['discount'];
                 $inputDocketParameters["discount_approve"] = (isset($inputDocketParameters['discount_approve']) ) ? $inputDocketParameters['discount_approve'] :$docketDetails['discount_approve'];
@@ -564,6 +567,7 @@ class DocketController extends Controller
                     'tcs' =>$inputDocketParameters["tcs"],
                     'fast_tag' =>$inputDocketParameters["fast_tag"],
                     'extended_warrnaty' =>$inputDocketParameters["extended_warrnaty"],
+                    'vas' =>$inputDocketParameters["vas"],
                     'other_charges' =>$inputDocketParameters["other_charges"],
                     'discount' =>$inputDocketParameters["discount"],
                     'discount_approve' =>$inputDocketParameters["discount_approve"],

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use App\customclasses\Corefunctions;
 use App\Models\User;
 use App\Models\ModelMst;
+use App\Models\ModelLink;
 use App\Models\Suffix;
 use App\Models\Grade;
 use App\Models\IntColor;
@@ -1024,10 +1025,140 @@ class MasterController extends Controller
             }
            
 
-
     }
 
+    public function getLinkList(Request $request){
+        $limit = isset($request->parameters['limit']) ? $request->parameters['limit']  : null;
+        $page = isset($request->parameters['page'])  ? $request->parameters['page']  : null;
 
+        $queryResult = ModelLink::orderBy('id','desc')->paginate($limit, ['*'], $pageName = "page", $page);
+        $response['code'] = config('constants.API_CODES.SUCCESS');
+        $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
+        $response['message'] =  'Link List generated successfully';
+        $response['data'] = $queryResult;
+        return response()->json($response,200);
+    }
+
+    public function addLink()
+    { 
+        try {
+            $inputParameters = $this->request['parameters'];
+
+            // $requiredFields = array('model_id','grade_id','int_color_id','suffix_id','ext_color_id');
+            $requiredFields = array('model_id','grade_id');
+            foreach ($requiredFields as $key => $value) {
+                if (!isset($inputParameters[$value]) || $inputParameters[$value] == '') throw new Exception(config('constants.VALIDATIONS.REQUIRED_FIELD'),404);
+
+            }
+
+            $model_name     =  isset($inputParameters['model_id']) ? ModelMst::where('id',$inputParameters['model_id'])->pluck('name')->first() : null;
+            $grade_name     =  isset($inputParameters['grade_id']) ? Grade::where('id',$inputParameters['grade_id'])->pluck('name')->first() : null;
+            $int_color_name =  isset($inputParameters['int_color_id']) ? IntColor::where('id',$inputParameters['int_color_id'])->pluck('name')->first() : null;
+            $suffix_name    =  isset($inputParameters['suffix_id']) ? Suffix::where('id',$inputParameters['suffix_id'])->pluck('name')->first() : null;
+            $ext_color_name =  isset($inputParameters['ext_color_id']) ? ExtColor::where('id',$inputParameters['ext_color_id'])->pluck('name')->first() : null; 
+
+            DB::table('model_links')->insertGetId(array(
+                'model_id'       =>  $inputParameters["model_id"] ?? null,
+                'grade_id'       =>  $inputParameters["grade_id"] ?? null,
+                'int_color_id'   =>  $inputParameters["int_color_id"] ?? null,
+                'suffix_id'      =>  $inputParameters["suffix_id"] ?? null,
+                'ext_color_id'   =>  $inputParameters["ext_color_id"] ?? null,
+                'model_name'     =>  $model_name,
+                'grade_name'     =>  $grade_name,
+                'int_color_name' =>  $int_color_name,
+                'suffix_name'    =>  $suffix_name,
+                'ext_color_name' =>  $ext_color_name,
+                'created_at'     =>  Carbon\Carbon::now(),
+                'updated_at'     =>  Carbon\Carbon::now()
+            ));
+
+            $response['code'] = config('constants.API_CODES.SUCCESS');
+            $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
+            $response['message'] = "link data inserted successfully.";
+            return response()->json($response,200);
+
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage(),'code'=> $e->getCode(),'status'=>config('constants.API_CODES.ERROR_STATUS')], config('constants.API_CODES.ERROR'));
+
+        }
+    }
+
+    public function linkDetail()
+    { 
+        try {
+            $inputParameters = $this->request['parameters'];
+
+            $requiredFields = array('link_id');
+            foreach ($requiredFields as $key => $value) {
+                if (!isset($inputParameters[$value]) || $inputParameters[$value] == '') throw new Exception(config('constants.VALIDATIONS.REQUIRED_FIELD'),404);
+
+            }
+
+            $data['linkDetails'] =  ModelLink::where('id',$inputParameters['link_id'])->first();
+            if( empty($data['linkDetails']) ){
+                throw new Exception('link does not exist.',475);
+            }
+
+            $response['code'] = config('constants.API_CODES.SUCCESS');
+            $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
+            $response['message'] = "link data.";
+            $response['data'] = $data;
+            return response()->json($response,200);
+
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage(),'code'=> $e->getCode(),'status'=>config('constants.API_CODES.ERROR_STATUS')], config('constants.API_CODES.ERROR'));
+
+        }
+    }
+
+    public function updateLink()
+    { 
+        try {
+            $inputParameters = $this->request['parameters'];
+
+            // $requiredFields = array('model_id','grade_id','int_color_id','suffix_id','ext_color_id');
+            $requiredFields = array('link_id','model_id','grade_id');
+            foreach ($requiredFields as $key => $value) {
+                if (!isset($inputParameters[$value]) || $inputParameters[$value] == '') throw new Exception(config('constants.VALIDATIONS.REQUIRED_FIELD'),404);
+
+            }
+
+            $linkDetails =  ModelLink::where('id',$inputParameters['link_id'])->first();
+
+            if( empty( $linkDetails ) ){
+                throw new Exception('link does not exist.',475);
+            }
+
+            $model_name     =  isset($inputParameters['model_id']) ? ModelMst::where('id',$inputParameters['model_id'])->pluck('name')->first() : null;
+            $grade_name     =  isset($inputParameters['grade_id']) ? Grade::where('id',$inputParameters['grade_id'])->pluck('name')->first() : null;
+            $int_color_name =  isset($inputParameters['int_color_id']) ? IntColor::where('id',$inputParameters['int_color_id'])->pluck('name')->first() : null;
+            $suffix_name    =  isset($inputParameters['suffix_id']) ? Suffix::where('id',$inputParameters['suffix_id'])->pluck('name')->first() : null;
+            $ext_color_name =  isset($inputParameters['ext_color_id']) ? ExtColor::where('id',$inputParameters['ext_color_id'])->pluck('name')->first() : null; 
+
+            DB::table('model_links')->where('id', $inputParameters['link_id'])->update(array(
+                'model_id'       =>  $inputParameters["model_id"] ?? null,
+                'grade_id'       =>  $inputParameters["grade_id"] ?? null,
+                'int_color_id'   =>  $inputParameters["int_color_id"] ?? null,
+                'suffix_id'      =>  $inputParameters["suffix_id"] ?? null,
+                'ext_color_id'   =>  $inputParameters["ext_color_id"] ?? null,
+                'model_name'     =>  $model_name,
+                'grade_name'     =>  $grade_name,
+                'int_color_name' =>  $int_color_name,
+                'suffix_name'    =>  $suffix_name,
+                'ext_color_name' =>  $ext_color_name, 
+                'updated_at'     =>  Carbon\Carbon::now()
+            ));
+
+            $response['code'] = config('constants.API_CODES.SUCCESS');
+            $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
+            $response['message'] = "link data updated successfully.";
+            return response()->json($response,200);
+
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage(),'code'=> $e->getCode(),'status'=>config('constants.API_CODES.ERROR_STATUS')], config('constants.API_CODES.ERROR'));
+
+        }
+    }
 
 
 }
