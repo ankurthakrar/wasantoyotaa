@@ -99,6 +99,12 @@ class DocketController extends Controller
                 'extended_warrnaty' =>$inputDocketParameters["extended_warrnaty"],
                 'vas' =>$inputDocketParameters["vas"],
                 'other_charges' =>$inputDocketParameters["other_charges"],
+                'insurance_discount' => $inputDocketParameters['insurance_discount'], 
+                'finance_discount' => $inputDocketParameters['finance_discount'],
+                'accessories_discount' => $inputDocketParameters['accessories_discount'], 
+                'rto_discount' => $inputDocketParameters['rto_discount'], 
+                'exchange_discount' => $inputDocketParameters['exchange_discount'],
+                'additional_discount' => $inputDocketParameters['additional_discount'],
                 'discount' =>$inputDocketParameters["discount"],
                 'discount_approve' =>$inputDocketParameters["discount_approve"],
                 'total_charges' =>$inputDocketParameters["total_charges"],
@@ -284,6 +290,12 @@ class DocketController extends Controller
             'docket_details.extended_warrnaty as extended_warrnaty',
             'docket_details.vas as vas',
             'docket_details.other_charges as other_charges',
+            'insurance_discount as insurance_discount',
+            'finance_discount as finance_discount',
+            'accessories_discount as accessories_discount',
+            'rto_discount as rto_discount',
+            'exchange_discount as exchange_discount',
+            'additional_discount as additional_discount',
             'docket_details.discount as discount',
             'docket_details.discount_approve as discount_approve',
             'docket_details.total_charges as total_charges',
@@ -523,6 +535,12 @@ class DocketController extends Controller
                 $inputDocketParameters["extended_warrnaty"] = (isset($inputDocketParameters['extended_warrnaty']) ) ? $inputDocketParameters['extended_warrnaty'] :$docketDetails['extended_warrnaty'];
                 $inputDocketParameters["vas"] = (isset($inputDocketParameters['vas']) ) ? $inputDocketParameters['vas'] :$docketDetails['vas'];
                 $inputDocketParameters["other_charges"] = (isset($inputDocketParameters['other_charges']) ) ? $inputDocketParameters['other_charges'] :$docketDetails['other_charges'];
+                $inputDocketParameters["insurance_discount"] = (isset($inputDocketParameters['insurance_discount'])) ? $inputDocketParameters['insurance_discount'] : $docketDetails['insurance_discount'];
+                $inputDocketParameters["finance_discount"] = (isset($inputDocketParameters['finance_discount'])) ? $inputDocketParameters['finance_discount'] : $docketDetails['finance_discount'];
+                $inputDocketParameters["accessories_discount"] = (isset($inputDocketParameters['accessories_discount'])) ? $inputDocketParameters['accessories_discount'] : $docketDetails['accessories_discount'];
+                $inputDocketParameters["rto_discount"] = (isset($inputDocketParameters['rto_discount'])) ? $inputDocketParameters['rto_discount'] : $docketDetails['rto_discount'];
+                $inputDocketParameters["exchange_discount"] = (isset($inputDocketParameters['exchange_discount'])) ? $inputDocketParameters['exchange_discount'] : $docketDetails['exchange_discount'];
+                $inputDocketParameters["additional_discount"] = (isset($inputDocketParameters['additional_discount'])) ? $inputDocketParameters['additional_discount'] : $docketDetails['additional_discount'];
                 $inputDocketParameters["discount"] = (isset($inputDocketParameters['discount']) ) ? $inputDocketParameters['discount'] :$docketDetails['discount'];
                 $inputDocketParameters["discount_approve"] = (isset($inputDocketParameters['discount_approve']) ) ? $inputDocketParameters['discount_approve'] :$docketDetails['discount_approve'];
                 $inputDocketParameters["total_charges"] = (isset($inputDocketParameters['total_charges']) ) ? $inputDocketParameters['total_charges'] :$docketDetails['total_charges'];
@@ -569,6 +587,12 @@ class DocketController extends Controller
                     'extended_warrnaty' =>$inputDocketParameters["extended_warrnaty"],
                     'vas' =>$inputDocketParameters["vas"],
                     'other_charges' =>$inputDocketParameters["other_charges"],
+                    'insurance_discount' => $inputDocketParameters['insurance_discount'], 
+                    'finance_discount' => $inputDocketParameters['finance_discount'],
+                    'accessories_discount' => $inputDocketParameters['accessories_discount'], 
+                    'rto_discount' => $inputDocketParameters['rto_discount'], 
+                    'exchange_discount' => $inputDocketParameters['exchange_discount'],
+                    'additional_discount' => $inputDocketParameters['additional_discount'],
                     'discount' =>$inputDocketParameters["discount"],
                     'discount_approve' =>$inputDocketParameters["discount_approve"],
                     'total_charges' =>$inputDocketParameters["total_charges"],
@@ -751,28 +775,28 @@ class DocketController extends Controller
                 
                     DB::table('address_details')->where('docket_id', $id)->where('type', 'registraion')->update(array(
                         'name' =>  $inputRegAddrParameters["name"],
-                      'tel_mobile_no' =>  $inputRegAddrParameters["tel_mobile_no"],
-                      'address' =>  $inputRegAddrParameters["address"],
-                      'gst' =>$inputRegAddrParameters["gst"],
-                      'mail_id' => $inputRegAddrParameters["mail_id"],
-                      'type' =>'registraion',
-                      'state' => $inputRegAddrParameters["state"],
-                      'dist' => $inputRegAddrParameters["dist"],
-                      'tal' => $inputRegAddrParameters["tal"],
-                      'pin' => $inputRegAddrParameters["pin"],
-                      'updated_at' => Carbon\Carbon::now()
-                      )); 
-                      
-
-              }
-
-
-              $correspondanceaddrdtls = DB::table('address_details')->where('docket_id',$id)->where('type', 'correspondance')->get();
-              $correspondanceaddrdtls = $this->Corefunctions->convertToArray($correspondanceaddrdtls);
-
-             
-
-            if( empty( $correspondanceaddrdtls ) ){
+                        'tel_mobile_no' =>  $inputRegAddrParameters["tel_mobile_no"],
+                        'address' =>  $inputRegAddrParameters["address"],
+                        'gst' =>$inputRegAddrParameters["gst"],
+                        'mail_id' => $inputRegAddrParameters["mail_id"],
+                        'type' =>'registraion',
+                        'state' => $inputRegAddrParameters["state"],
+                        'dist' => $inputRegAddrParameters["dist"],
+                        'tal' => $inputRegAddrParameters["tal"],
+                        'pin' => $inputRegAddrParameters["pin"],
+                        'updated_at' => Carbon\Carbon::now()
+                    )); 
+                    
+                    
+                }
+                
+                
+                $correspondanceaddrdtls = DB::table('address_details')->where('docket_id',$id)->where('type', 'correspondance')->get();
+                $correspondanceaddrdtls = $this->Corefunctions->convertToArray($correspondanceaddrdtls);
+                
+                
+                
+                if( empty( $correspondanceaddrdtls ) ){
                 //insert new record
             } else{
 
