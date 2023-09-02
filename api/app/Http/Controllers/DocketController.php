@@ -87,6 +87,9 @@ class DocketController extends Controller
                 'insurance' =>$inputDocketParameters["insurance"],
                 'registration' =>$inputDocketParameters["registration"],
                 'order_source' =>$inputDocketParameters["order_source"],
+                'rto_for' =>$inputDocketParameters["rto_for"],
+                'type_of_sale' =>$inputDocketParameters["type_of_sale"],
+                'location_type' =>$inputDocketParameters["location_type"],
                 'cost_of_vehicle' =>$inputDocketParameters["cost_of_vehicle"],
                 'insurance_amt' =>$inputDocketParameters["insurance_amt"],
                 'registration_amt' =>$inputDocketParameters["registration_amt"],
@@ -188,6 +191,7 @@ class DocketController extends Controller
                 'dist' => $inputRegAddrParameters["dist"],
                 'tal' => $inputRegAddrParameters["tal"],
                 'pin' => $inputRegAddrParameters["pin"],
+                'aadhar_link' => $inputRegAddrParameters["aadhar_link"],
                 'created_at' => Carbon\Carbon::now()
                      
               ));
@@ -204,6 +208,7 @@ class DocketController extends Controller
                 'dist' => $inputCorrAddrParameters["dist"],
                 'tal' => $inputCorrAddrParameters["tal"],
                 'pin' => $inputCorrAddrParameters["pin"],
+                'aadhar_link' => $inputRegAddrParameters["aadhar_link"],
                 'created_at' => Carbon\Carbon::now()
                      
               ));
@@ -278,6 +283,9 @@ class DocketController extends Controller
             'docket_details.insurance as insurance',
             'docket_details.registration as registration',
             'docket_details.order_source as order_source',
+            'docket_details.rto_for as rto_for',
+            'docket_details.type_of_sale as type_of_sale',
+            'docket_details.location_type as location_type',
             'docket_details.cost_of_vehicle as cost_of_vehicle',
             'docket_details.insurance_amt as insurance_amt',
             'docket_details.registration_amt as registration_amt',
@@ -524,6 +532,9 @@ class DocketController extends Controller
                 $inputDocketParameters["insurance"] = (isset($inputDocketParameters['insurance']) ) ? $inputDocketParameters['insurance'] :$docketDetails['insurance'];
                 $inputDocketParameters["registration"] = (isset($inputDocketParameters['registration']) ) ? $inputDocketParameters['registration'] :$docketDetails['registration'];
                 $inputDocketParameters["order_source"] = (isset($inputDocketParameters['order_source']) ) ? $inputDocketParameters['order_source'] :$docketDetails['order_source'];
+                $inputDocketParameters["rto_for"] = (isset($inputDocketParameters['rto_for']) ) ? $inputDocketParameters['rto_for'] :$docketDetails['rto_for'];
+                $inputDocketParameters["type_of_sale"] = (isset($inputDocketParameters['type_of_sale']) ) ? $inputDocketParameters['type_of_sale'] :$docketDetails['type_of_sale'];
+                $inputDocketParameters["location_type"] = (isset($inputDocketParameters['location_type']) ) ? $inputDocketParameters['location_type'] :$docketDetails['location_type'];
                 $inputDocketParameters["cost_of_vehicle"] = (isset($inputDocketParameters['cost_of_vehicle']) ) ? $inputDocketParameters['cost_of_vehicle'] :$docketDetails['cost_of_vehicle'];
                 $inputDocketParameters["insurance_amt"] = (isset($inputDocketParameters['insurance_amt']) ) ? $inputDocketParameters['insurance_amt'] :$docketDetails['insurance_amt'];
                 $inputDocketParameters["registration_amt"] = (isset($inputDocketParameters['registration_amt']) ) ? $inputDocketParameters['registration_amt'] :$docketDetails['registration_amt'];
@@ -575,6 +586,9 @@ class DocketController extends Controller
                     'insurance' =>$inputDocketParameters["insurance"],
                     'registration' =>$inputDocketParameters["registration"],
                     'order_source' =>$inputDocketParameters["order_source"],
+                    'rto_for' =>$inputDocketParameters["rto_for"],
+                    'type_of_sale' =>$inputDocketParameters["type_of_sale"],
+                    'location_type' =>$inputDocketParameters["location_type"],
                     'cost_of_vehicle' =>$inputDocketParameters["cost_of_vehicle"],
                     'insurance_amt' =>$inputDocketParameters["insurance_amt"],
                     'registration_amt' =>$inputDocketParameters["registration_amt"],
@@ -772,6 +786,7 @@ class DocketController extends Controller
                     $inputRegAddrParameters["state"] = (isset($inputRegAddrParameters['state']) ) ? $inputRegAddrParameters['state'] :$regaddrdtls['state'];
                     $inputRegAddrParameters["tal"] = (isset($inputRegAddrParameters['tal']) ) ? $inputRegAddrParameters['tal'] :$regaddrdtls['tal'];
                     $inputRegAddrParameters["pin"] = (isset($inputRegAddrParameters['pin']) ) ? $inputRegAddrParameters['pin'] :$regaddrdtls['pin'];
+                    $inputRegAddrParameters["aadhar_link"] = (isset($inputRegAddrParameters['aadhar_link']) ) ? $inputRegAddrParameters['aadhar_link'] :$regaddrdtls['aadhar_link'];
                 
                     DB::table('address_details')->where('docket_id', $id)->where('type', 'registraion')->update(array(
                         'name' =>  $inputRegAddrParameters["name"],
@@ -784,6 +799,7 @@ class DocketController extends Controller
                         'dist' => $inputRegAddrParameters["dist"],
                         'tal' => $inputRegAddrParameters["tal"],
                         'pin' => $inputRegAddrParameters["pin"],
+                        'aadhar_link' => $inputRegAddrParameters["aadhar_link"],
                         'updated_at' => Carbon\Carbon::now()
                     )); 
                     
@@ -810,7 +826,8 @@ class DocketController extends Controller
                  $inputCorrAddrParameters["state"] = (isset($inputCorrAddrParameters['state']) ) ? $inputCorrAddrParameters['state'] :$regaddrdtls['state'];
                  $inputCorrAddrParameters["tal"] = (isset($inputCorrAddrParameters['tal']) ) ? $inputCorrAddrParameters['tal'] :$regaddrdtls['tal'];
                  $inputCorrAddrParameters["pin"] = (isset($inputCorrAddrParameters['pin']) ) ? $inputCorrAddrParameters['pin'] :$regaddrdtls['pin'];
-             
+                 $inputRegAddrParameters["aadhar_link"] = (isset($inputRegAddrParameters['aadhar_link']) ) ? $inputRegAddrParameters['aadhar_link'] :$regaddrdtls['aadhar_link'];
+
                   DB::table('address_details')->where('docket_id', $id)->where('type', 'correspondance')->update(array(
                       'name' =>  $inputCorrAddrParameters["name"],
                     'tel_mobile_no' =>  $inputCorrAddrParameters["tel_mobile_no"],
@@ -822,6 +839,7 @@ class DocketController extends Controller
                     'dist' => $inputCorrAddrParameters["dist"],
                     'tal' => $inputCorrAddrParameters["tal"],
                     'pin' => $inputCorrAddrParameters["pin"],
+                    'aadhar_link' => $inputRegAddrParameters["aadhar_link"],
                     'updated_at' => Carbon\Carbon::now()
                     )); 
                     
