@@ -1027,6 +1027,25 @@ class MasterController extends Controller
 
     }
 
+    public function availableSuffixList(Request $request){
+        $limit = isset($request->parameters['limit']) ? $request->parameters['limit']  : null;
+        $page = isset($request->parameters['page'])  ? $request->parameters['page']  : null;
+        $modelLink = ModelLink::pluck('suffix_id')->toArray();
+        if($page == null){
+            $queryResult = Suffix::whereNull('deleted_at')->whereNotIn('id',$modelLink)->orderBy('id','desc')->get();
+
+            // $queryResult = $this->Corefunctions->convertToArray($queryResult);
+            $response['code'] = config('constants.API_CODES.SUCCESS');
+            $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
+            $response['message'] =  'Available suffix List generated successfully';
+            $response['data'] = $queryResult;
+            return response()->json($response,200);
+
+        }
+        $queryResult = Suffix::whereNull('deleted_at')->whereNotIn('id',$modelLink)->orderBy('id','desc')->paginate($limit, ['*'], $pageName = "page", $page);
+        return $this->generateCustomizedPaginatedResponse($queryResult, 1, 'Suffix List generated successfully', null);
+    }
+
     public function getLinkList(Request $request){
         $limit = isset($request->parameters['limit']) ? $request->parameters['limit']  : null;
         $page = isset($request->parameters['page'])  ? $request->parameters['page']  : null;
@@ -1045,7 +1064,7 @@ class MasterController extends Controller
             $inputParameters = $this->request['parameters'];
 
             // $requiredFields = array('model_id','grade_id','int_color_id','suffix_id','ext_color_id');
-            $requiredFields = array('model_id','grade_id');
+            $requiredFields = array('model_id','suffix_id');
             foreach ($requiredFields as $key => $value) {
                 if (!isset($inputParameters[$value]) || $inputParameters[$value] == '') throw new Exception(config('constants.VALIDATIONS.REQUIRED_FIELD'),404);
 
@@ -1117,7 +1136,7 @@ class MasterController extends Controller
             $inputParameters = $this->request['parameters'];
 
             // $requiredFields = array('model_id','grade_id','int_color_id','suffix_id','ext_color_id');
-            $requiredFields = array('link_id','model_id','grade_id');
+            $requiredFields = array('link_id','model_id','suffix_id');
             foreach ($requiredFields as $key => $value) {
                 if (!isset($inputParameters[$value]) || $inputParameters[$value] == '') throw new Exception(config('constants.VALIDATIONS.REQUIRED_FIELD'),404);
 
