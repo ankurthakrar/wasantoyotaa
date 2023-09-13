@@ -1179,5 +1179,36 @@ class MasterController extends Controller
         }
     }
 
+    public function getDataDetailBySuffix(Request $request)
+    {
+
+        try {
+                $inputParameters = $this->request['parameters']; 
+                $requiredFields = array('suffix');
+                foreach ($requiredFields as $key => $value) {
+                    if (!isset($inputParameters[$value]) || $inputParameters[$value] == '') {
+                        $this->AdditionalFunctions->returnError("Please enter required details.");
+                    }
+                }
+               
+                $suffix = Suffix::where('name',$inputParameters['suffix'])->first();
+                if( empty( $suffix ) ){
+                    throw new Exception('suffix does not exist.',475);
+                }
+
+                $queryResult = ModelLink::where('suffix_id',$suffix->id)->first();
+                $suffixDetail = $this->Corefunctions->convertToArray($queryResult);
+                
+                if( empty( $suffixDetail ) ){
+                    throw new Exception('suffix does not linked.',475);
+                }
+                $response['code'] = config('constants.API_CODES.SUCCESS');
+                $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
+                $response['data'] = $suffixDetail;
+                return response()->json($response,200);
+            } catch (Exception $ex) {
+                return response()->json(['message' => $ex->getMessage()], 400);
+            }
+    }     
 
 }
