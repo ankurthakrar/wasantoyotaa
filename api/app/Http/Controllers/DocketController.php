@@ -477,6 +477,51 @@ class DocketController extends Controller
     }
 
 
+    public function scrapDocket(Request $request)
+    {
+
+        try {
+                 
+                /* Input Parameters */
+                $inputParameters = $this->request['parameters'];  // Input data
+
+                $requiredFields = array('id');
+            
+                foreach ($requiredFields as $key => $value) {
+                    if (!isset($inputParameters[$value]) || $inputParameters[$value] == '') {
+                        $this->AdditionalFunctions->returnError("Please enter required details.");
+                    }
+                }
+                
+                /* Docket Details */
+                $id = $inputParameters['id'];
+
+                $queryResult = Docket::where('id',$id)->first();
+
+                $docketDetails = $this->Corefunctions->convertToArray($queryResult);
+                
+                if( empty( $docketDetails ) ){
+                    throw new Exception('Docket id does not exist.',475);
+                }
+
+
+                $vehicledtls = DB::table('vehicle_details')->where('docket_id',$id)->select('vin_no')->first();
+                $vehicledtls = $this->Corefunctions->convertToArray($vehicledtls);
+                if( !empty( $vehicledtls ) ){
+                    $stocks = DB::table('stocks')->where('vin_no',$vehicledtls['vin_no'])->update(['status' => 'FREE']);
+                  
+                } 
+                $response['code'] = config('constants.API_CODES.SUCCESS');
+                $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
+                $response['message'] = "Scraped successfully";
+                return response()->json($response,200);
+            } catch (Exception $ex) {
+                return response()->json(['message' => $ex->getMessage()], 400);
+            }
+           
+
+
+    }
 
     public function updateDocketDetails(Request $request)
     {
