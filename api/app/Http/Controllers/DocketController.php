@@ -341,6 +341,7 @@ class DocketController extends Controller
         )
             ->leftJoin('vehicle_details', 'vehicle_details.docket_id', 'docket_details.id')
             ->leftJoin('customer_details', 'customer_details.docket_id', '=', 'docket_details.id')
+            ->where('docket_details.is_active',1)
             ->orderBy('docket_details.id','desc');
             //->leftJoin('payment_details', 'payment_details.docket_id', 'docket_details.id')
             /* ->leftJoin('address_details', 'address_details.docket_id', 'docket_details.id')
@@ -509,8 +510,9 @@ class DocketController extends Controller
                 $vehicledtls = $this->Corefunctions->convertToArray($vehicledtls);
                 if( !empty( $vehicledtls ) ){
                     $stocks = DB::table('stocks')->where('vin_no',$vehicledtls['vin_no'])->update(['status' => 'FREE']);
-                  
+                    
                 } 
+                Docket::where('id',$id)->update(['is_active' => 0]);
                 $response['code'] = config('constants.API_CODES.SUCCESS');
                 $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
                 $response['message'] = "Scraped successfully";
