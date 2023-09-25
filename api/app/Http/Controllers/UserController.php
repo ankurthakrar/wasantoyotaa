@@ -35,7 +35,7 @@ class UserController extends Controller
     { 
         try {
             $inputParameters = $this->request['parameters'];
-            $requiredFields = array('firstname', 'lastname', 'email', 'username','password');
+            $requiredFields = array('firstname', 'lastname', 'email', 'username','password','location_id','sub_location_id','team_new_id');
             foreach ($requiredFields as $key => $value) {
                 if (!isset($inputParameters[$value]) || $inputParameters[$value] == '') throw new Exception(config('constants.VALIDATIONS.REQUIRED_FIELD'),404);
 
@@ -119,6 +119,9 @@ class UserController extends Controller
             $userInfo['team'] = $userDetails['team'];
             $userInfo['status'] = $userDetails['status'];
             $userInfo['userid'] = $userDetails['id'];
+            $userInfo['location_id'] = $userDetails['location_id'];
+            $userInfo['sub_location_id'] = $userDetails['sub_location_id'];
+            $userInfo['team_new_id'] = $userDetails['team_new_id'];
             $response["data"]['userdetails'] = $userInfo;
             $response["data"]['accesstoken'] = $tokenGenerate;
             $response['code'] = config('constants.API_CODES.SUCCESS');

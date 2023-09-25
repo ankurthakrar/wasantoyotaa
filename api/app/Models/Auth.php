@@ -85,6 +85,9 @@ class Auth extends Model
       'role'=>$role,
       'team'=>$team,
       'status'=>$status,
+      'location_id' => $inputParameters['location_id'],
+      'sub_location_id' => $inputParameters['sub_location_id'],
+      'team_new_id' => $inputParameters['team_new_id'],
 		  'created_at' => Carbon\Carbon::now()
 		  	 
 		));

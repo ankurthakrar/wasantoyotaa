@@ -86,3 +86,6 @@ $router->post('link-list', 'MasterController@getLinkList');
 $router->post('link-detail', 'MasterController@linkDetail'); 
 $router->post('update-link', 'MasterController@updateLink'); 
 $router->post('getDataBySuffix', 'MasterController@getDataDetailBySuffix');
+
+$router->post('getSubLocationUser', 'MasterController@getSubLocationUser');
+$router->post('getTeamFromLocation', 'MasterController@getTeamFromLocation');
