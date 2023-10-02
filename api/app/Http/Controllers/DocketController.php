@@ -239,24 +239,47 @@ class DocketController extends Controller
                       'updated_at' => Carbon\Carbon::now())); */
               } 
 
-            if(!empty($inputDocketParameters["approval_rto_crtm"]) && empty($inputDocketParameters["approval_rto_crtm_date"]) && isset($this->request['current_user_id'])){
+              if(isset($this->request['current_user_id'])){
                 $user_data = User::where('id',$this->request['current_user_id'])->first();
                 if($user_data->team_new_id > 0){
-                    $rto_user = User::where('team_new_id',$user_data->team_new_id)->where('role','RTO')->first();
-                    if(!empty($rto_user)){
-                        $isRtoNotificationExist = DB::table('rto_notifications')->where('sender_id',$user_data->id)->where('receiver_id',$rto_user->id)->where('doc_id',$docketid)->first();
-                        if(empty($isRtoNotificationExist)){
-                           $rto_data = array(
-                                'sender_id'     => $user_data->id,
-                                'receiver_id'   => $rto_user->id,
-                                'doc_id'        => $docketid,
-                                'vin_no'        => $inputVehicleParameters["vin_no"],
-                                'so_name'       => $inputDocketParameters["so_name"],
-                                'customer_name' => $inputCustomerParameters["customer_name"],
-                                'created_at'    => Carbon\Carbon::now(),
-                                'updated_at'    => Carbon\Carbon::now(),
-                           );
-                           DB::table('rto_notifications')->insertGetId($rto_data);
+                    if(!empty($inputDocketParameters["approval_rto_crtm"]) && empty($inputDocketParameters["approval_rto_crtm_date"])){
+                        $rto_user = User::where('team_new_id',$user_data->team_new_id)->where('role','RTO')->first();
+                        if(!empty($rto_user)){
+                            $isRtoNotificationExist = DB::table('rto_notifications')->where('sender_id',$user_data->id)->where('receiver_id',$rto_user->id)->where('doc_id',$docketid)->where('type','rto')->first();
+                            if(empty($isRtoNotificationExist)){
+                               $rto_data = array(
+                                    'sender_id'     => $user_data->id,
+                                    'receiver_id'   => $rto_user->id,
+                                    'doc_id'        => $docketid,
+                                    'vin_no'        => $inputVehicleParameters["vin_no"],
+                                    'so_name'       => $inputDocketParameters["so_name"],
+                                    'customer_name' => $inputCustomerParameters["customer_name"],
+                                    'type'          => 'rto',
+                                    'created_at'    => Carbon\Carbon::now(),
+                                    'updated_at'    => Carbon\Carbon::now(),
+                               );
+                               DB::table('rto_notifications')->insertGetId($rto_data);
+                            }
+                        }
+                    }
+                    if(!empty($inputDocketParameters["approval_insurance"]) && empty($inputDocketParameters["approval_insurance_date"])){
+                        $insurance_user = User::where('team_new_id',$user_data->team_new_id)->where('role','INSURANCE')->first();
+                        if(!empty($insurance_user)){
+                            $isRtoNotificationExist = DB::table('rto_notifications')->where('sender_id',$user_data->id)->where('receiver_id',$insurance_user->id)->where('doc_id',$docketid)->where('type','insurance')->first();
+                            if(empty($isRtoNotificationExist)){
+                               $rto_data = array(
+                                    'sender_id'     => $user_data->id,
+                                    'receiver_id'   => $insurance_user->id,
+                                    'doc_id'        => $docketid,
+                                    'vin_no'        => $inputVehicleParameters["vin_no"],
+                                    'so_name'       => $inputDocketParameters["so_name"],
+                                    'customer_name' => $inputCustomerParameters["customer_name"],
+                                    'type'          => 'insurance',
+                                    'created_at'    => Carbon\Carbon::now(),
+                                    'updated_at'    => Carbon\Carbon::now(),
+                               );
+                               DB::table('rto_notifications')->insertGetId($rto_data);
+                            }
                         }
                     }
                 }
@@ -983,26 +1006,59 @@ class DocketController extends Controller
                 } 
 
               
-                if(!empty($inputDocketParameters["approval_rto_crtm"]) && empty($inputDocketParameters["approval_rto_crtm_date"]) && isset($this->request['current_user_id'])){
-                    $user_data = User::where('id',$this->request['current_user_id'])->first();
-                    if($user_data->team_new_id > 0){
-                        $rto_user = User::where('team_new_id',$user_data->team_new_id)->where('role','RTO')->first();
-                        if(!empty($rto_user)){
-                            $isRtoNotificationExist = DB::table('rto_notifications')->where('sender_id',$user_data->id)->where('receiver_id',$rto_user->id)->where('doc_id',$id)->first();
-                            if(empty($isRtoNotificationExist)){
-                               $rto_data = array(
-                                    'sender_id'     => $user_data->id,
-                                    'receiver_id'   => $rto_user->id,
-                                    'doc_id'        => $id,
-                                    'vin_no'        => $inputVehicleParameters["vin_no"],
-                                    'so_name'       => $inputDocketParameters["so_name"],
-                                    'customer_name' => $inputCustomerParameters["customer_name"],
-                                    'created_at'    => Carbon\Carbon::now(),
-                                    'updated_at'    => Carbon\Carbon::now(),
-                               );
-                               DB::table('rto_notifications')->insertGetId($rto_data);
+                if(!empty($inputDocketParameters["approval_rto_crtm"]) && isset($this->request['current_user_id'])){
+                    if(empty($inputDocketParameters["approval_rto_crtm_date"])){
+                        $user_data = User::where('id',$this->request['current_user_id'])->first();
+                        if($user_data->team_new_id > 0){
+                            $rto_user = User::where('team_new_id',$user_data->team_new_id)->where('role','RTO')->first();
+                            if(!empty($rto_user)){
+                                $isRtoNotificationExist = DB::table('rto_notifications')->where('sender_id',$user_data->id)->where('receiver_id',$rto_user->id)->where('doc_id',$id)->where('type','rto')->first();
+                                if(empty($isRtoNotificationExist)){
+                                   $rto_data = array(
+                                        'sender_id'     => $user_data->id,
+                                        'receiver_id'   => $rto_user->id,
+                                        'doc_id'        => $id,
+                                        'vin_no'        => $inputVehicleParameters["vin_no"],
+                                        'so_name'       => $inputDocketParameters["so_name"],
+                                        'customer_name' => $inputCustomerParameters["customer_name"],
+                                        'type'          => 'rto',
+                                        'created_at'    => Carbon\Carbon::now(),
+                                        'updated_at'    => Carbon\Carbon::now(),
+                                   );
+                                   DB::table('rto_notifications')->insertGetId($rto_data);
+                                }
                             }
                         }
+                    }elseif(!empty($inputDocketParameters["approval_rto_crtm_date"])){
+                        DB::table('rto_notifications')->where('receiver_id',$this->request['current_user_id'])->where('doc_id',$id)->where('type','rto')->delete();
+                    }
+                }; 
+
+                if(!empty($inputDocketParameters["approval_insurance"]) && isset($this->request['current_user_id'])){
+                    if(empty($inputDocketParameters["approval_insurance_date"])){
+                        $user_data = User::where('id',$this->request['current_user_id'])->first();
+                        if($user_data->team_new_id > 0){
+                            $insurance_user = User::where('team_new_id',$user_data->team_new_id)->where('role','INSURANCE')->first();
+                            if(!empty($insurance_user)){
+                                $isRtoNotificationExist = DB::table('rto_notifications')->where('sender_id',$user_data->id)->where('receiver_id',$insurance_user->id)->where('doc_id',$id)->where('type','rto')->first();
+                                if(empty($isRtoNotificationExist)){
+                                   $rto_data = array(
+                                        'sender_id'     => $user_data->id,
+                                        'receiver_id'   => $insurance_user->id,
+                                        'doc_id'        => $id,
+                                        'vin_no'        => $inputVehicleParameters["vin_no"],
+                                        'so_name'       => $inputDocketParameters["so_name"],
+                                        'customer_name' => $inputCustomerParameters["customer_name"],
+                                        'type'          => 'insurance',
+                                        'created_at'    => Carbon\Carbon::now(),
+                                        'updated_at'    => Carbon\Carbon::now(),
+                                   );
+                                   DB::table('rto_notifications')->insertGetId($rto_data);
+                                }
+                            }
+                        }
+                    }elseif(!empty($inputDocketParameters["approval_insurance_date"])){
+                        DB::table('rto_notifications')->where('receiver_id',$this->request['current_user_id'])->where('doc_id',$id)->where('type','insurance')->delete();
                     }
                 }; 
 

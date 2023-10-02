@@ -23,7 +23,7 @@ $router->get('/', function () use ($router) {
 $router->post('register', 'UserController@register');
 $router->post('login', 'UserController@login');
 $router->post('rtoNotificationList', 'UserController@rtoNotificationList');
-$router->post('rtoDocketDateUpdate', 'UserController@rtoDocketDateUpdate');
+// $router->post('rtoDocketDateUpdate', 'UserController@rtoDocketDateUpdate');
 $router->post('createStock', 'StockController@addStock');
 $router->post('logout', 'StockController@logout');
 

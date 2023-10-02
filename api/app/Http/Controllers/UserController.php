@@ -152,6 +152,17 @@ class UserController extends Controller
 
                 $queryResult = DB::table('rto_notifications')->where('receiver_id',$logged_id)->orderBy('rto_notifications.id','desc')->paginate($limit, ['*'], $pageName = "page", $page);;
 
+                foreach ($queryResult as $notification) {
+                    $vin_id = $notification->vin_no; 
+                    $additionalStocks = DB::table('stocks')->where('vin_no', $vin_id)->first(); 
+                    $notification->original_customer_name = '';
+                    $notification->original_so_name = '';
+                    if(!empty($additionalStocks)){
+                        $notification->original_customer_name = $additionalStocks->customer_name;
+                        $notification->original_so_name = $additionalStocks->so_name;
+                    }
+                }
+
                 $response['data'] = $queryResult;
                 return response()->json($response,200);
             } catch (Exception $ex) {
@@ -159,36 +170,36 @@ class UserController extends Controller
             }
     }
 
-    public function rtoDocketDateUpdate(Request $request)
-    {
-        try {
+    // public function rtoDocketDateUpdate(Request $request)
+    // {
+    //     try {
                 
-                $inputParameters = $this->request['parameters'];  // Input data
-                $requiredFields = array('docket_id','date','rto_notifications_id');
+    //             $inputParameters = $this->request['parameters'];  // Input data
+    //             $requiredFields = array('docket_id','date','rto_notifications_id');
             
-                foreach ($requiredFields as $key => $value) {
-                    if (!isset($inputParameters[$value]) || $inputParameters[$value] == '') {
-                        $this->AdditionalFunctions->returnError("Please enter required details.");
-                    }
-                }
+    //             foreach ($requiredFields as $key => $value) {
+    //                 if (!isset($inputParameters[$value]) || $inputParameters[$value] == '') {
+    //                     $this->AdditionalFunctions->returnError("Please enter required details.");
+    //                 }
+    //             }
                 
-                $docket_id = $inputParameters['docket_id'];
-                $rto_notifications_id = $inputParameters['rto_notifications_id'];
-                $date = $inputParameters['date'];
+    //             $docket_id = $inputParameters['docket_id'];
+    //             $rto_notifications_id = $inputParameters['rto_notifications_id'];
+    //             $date = $inputParameters['date'];
 
                 
-                $docket_detail = DB::table('docket_details')->where('id',$docket_id)->first();
-                if(!empty($docket_detail)){
-                    DB::table('docket_details')->where('id',$docket_id)->update(['approval_rto_crtm_date' => $date]);
-                    $rto_notification = DB::table('rto_notifications')->where('id',$rto_notifications_id)->delete();
-                }
+    //             $docket_detail = DB::table('docket_details')->where('id',$docket_id)->first();
+    //             if(!empty($docket_detail)){
+    //                 DB::table('docket_details')->where('id',$docket_id)->update(['approval_rto_crtm_date' => $date]);
+    //                 $rto_notification = DB::table('rto_notifications')->where('id',$rto_notifications_id)->delete();
+    //             }
 
-                $response['code'] = config('constants.API_CODES.SUCCESS');
-                $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
-                $response['message'] = 'Date updated successfully';
-                return response()->json($response,200);
-            } catch (Exception $ex) {
-                return response()->json(['message' => $ex->getMessage()], 400);
-            }
-    }
+    //             $response['code'] = config('constants.API_CODES.SUCCESS');
+    //             $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
+    //             $response['message'] = 'Date updated successfully';
+    //             return response()->json($response,200);
+    //         } catch (Exception $ex) {
+    //             return response()->json(['message' => $ex->getMessage()], 400);
+    //         }
+    // }
 }
