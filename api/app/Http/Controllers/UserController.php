@@ -122,6 +122,14 @@ class UserController extends Controller
             $userInfo['location_id'] = $userDetails['location_id'];
             $userInfo['sub_location_id'] = $userDetails['sub_location_id'];
             $userInfo['team_new_id'] = $userDetails['team_new_id'];
+            $userInfo['team_new_name'] = "";
+            if($userInfo['team_new_id'] > 0){
+                $team_user = DB::table('teams_user')->where('sub_location_id',$userDetails['team_new_id'])->first();
+                if(!empty($team_user)){
+                    $userInfo['team_new_name'] = $team_user->name;
+
+                }
+            }
             $response["data"]['userdetails'] = $userInfo;
             $response["data"]['accesstoken'] = $tokenGenerate;
             $response['code'] = config('constants.API_CODES.SUCCESS');
@@ -164,6 +172,9 @@ class UserController extends Controller
                 }
 
                 $response['data'] = $queryResult;
+                $response['code'] = config('constants.API_CODES.SUCCESS');
+                $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
+                $response['message'] = "Notification List";
                 return response()->json($response,200);
             } catch (Exception $ex) {
                 return response()->json(['message' => $ex->getMessage()], 400);

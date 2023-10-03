@@ -96,6 +96,7 @@ class DocketController extends Controller
                 'accessories_amt_inbuilt' =>$inputDocketParameters["accessories_amt_inbuilt"],
                 'accessories_amt_additional' =>$inputDocketParameters["accessories_amt_additional"],
                 'special_no' =>$inputDocketParameters["special_no"],
+                'special_no_by' => $inputDocketParameters["special_no_by"] ?? "", 
                 'depot_charges' =>$inputDocketParameters["depot_charges"],
                 'tcs' =>$inputDocketParameters["tcs"],
                 'fast_tag' =>$inputDocketParameters["fast_tag"],
@@ -107,7 +108,9 @@ class DocketController extends Controller
                 'accessories_discount' => $inputDocketParameters['accessories_discount'], 
                 'rto_discount' => $inputDocketParameters['rto_discount'], 
                 'exchange_discount' => $inputDocketParameters['exchange_discount'],
-                'additional_discount' => $inputDocketParameters['additional_discount'],
+                'commission' => $inputDocketParameters['commission'],
+                'vehicle_discount' => $inputDocketParameters['vehicle_discount'],
+                'extended_warranty_discount' => $inputDocketParameters['extended_warranty_discount'],
                 'discount' =>$inputDocketParameters["discount"],
                 'discount_approve' =>$inputDocketParameters["discount_approve"],
                 'total_charges' =>$inputDocketParameters["total_charges"],
@@ -633,6 +636,7 @@ class DocketController extends Controller
                 $inputDocketParameters["accessories_amt_inbuilt"] = (isset($inputDocketParameters['accessories_amt_inbuilt']) ) ? $inputDocketParameters['accessories_amt_inbuilt'] :$docketDetails['accessories_amt_inbuilt'];
                 $inputDocketParameters["accessories_amt_additional"] = (isset($inputDocketParameters['accessories_amt_additional']) ) ? $inputDocketParameters['accessories_amt_additional'] :$docketDetails['accessories_amt_additional'];
                 $inputDocketParameters["special_no"] = (isset($inputDocketParameters['special_no']) ) ? $inputDocketParameters['special_no'] :$docketDetails['special_no'];
+                $inputDocketParameters["special_no_by"] = (isset($inputDocketParameters['special_no_by'])) ? $inputDocketParameters['special_no_by'] : $docketDetails['special_no_by'];
                 $inputDocketParameters["depot_charges"] = (isset($inputDocketParameters['depot_charges']) ) ? $inputDocketParameters['depot_charges'] :$docketDetails['depot_charges'];
                 $inputDocketParameters["tcs"] = (isset($inputDocketParameters['tcs']) ) ? $inputDocketParameters['tcs'] :$docketDetails['tcs'];
                 $inputDocketParameters["extended_warrnaty"] = (isset($inputDocketParameters['extended_warrnaty']) ) ? $inputDocketParameters['extended_warrnaty'] :$docketDetails['extended_warrnaty'];
@@ -643,7 +647,10 @@ class DocketController extends Controller
                 $inputDocketParameters["accessories_discount"] = (isset($inputDocketParameters['accessories_discount'])) ? $inputDocketParameters['accessories_discount'] : $docketDetails['accessories_discount'];
                 $inputDocketParameters["rto_discount"] = (isset($inputDocketParameters['rto_discount'])) ? $inputDocketParameters['rto_discount'] : $docketDetails['rto_discount'];
                 $inputDocketParameters["exchange_discount"] = (isset($inputDocketParameters['exchange_discount'])) ? $inputDocketParameters['exchange_discount'] : $docketDetails['exchange_discount'];
-                $inputDocketParameters["additional_discount"] = (isset($inputDocketParameters['additional_discount'])) ? $inputDocketParameters['additional_discount'] : $docketDetails['additional_discount'];
+                $inputDocketParameters["commission"] = (isset($inputDocketParameters['commission'])) ? $inputDocketParameters['commission'] : $docketDetails['commission'];
+                // $inputDocketParameters["additional_discount"] = (isset($inputDocketParameters['additional_discount'])) ? $inputDocketParameters['additional_discount'] : $docketDetails['additional_discount'];
+                $inputDocketParameters["vehicle_discount"] = (isset($inputDocketParameters['vehicle_discount'])) ? $inputDocketParameters['vehicle_discount'] : $docketDetails['vehicle_discount'];
+                $inputDocketParameters["extended_warranty_discount"] = (isset($inputDocketParameters['extended_warranty_discount'])) ? $inputDocketParameters['extended_warranty_discount'] : $docketDetails['extended_warranty_discount'];
                 $inputDocketParameters["discount"] = (isset($inputDocketParameters['discount']) ) ? $inputDocketParameters['discount'] :$docketDetails['discount'];
                 $inputDocketParameters["discount_approve"] = (isset($inputDocketParameters['discount_approve']) ) ? $inputDocketParameters['discount_approve'] :$docketDetails['discount_approve'];
                 $inputDocketParameters["total_charges"] = (isset($inputDocketParameters['total_charges']) ) ? $inputDocketParameters['total_charges'] :$docketDetails['total_charges'];
@@ -687,6 +694,7 @@ class DocketController extends Controller
                     'accessories_amt_inbuilt' =>$inputDocketParameters["accessories_amt_inbuilt"],
                     'accessories_amt_additional' =>$inputDocketParameters["accessories_amt_additional"],
                     'special_no' =>$inputDocketParameters["special_no"],
+                    'special_no_by' => $inputDocketParameters["special_no_by"] ?? "",
                     'depot_charges' =>$inputDocketParameters["depot_charges"],
                     'tcs' =>$inputDocketParameters["tcs"],
                     'fast_tag' =>$inputDocketParameters["fast_tag"],
@@ -698,7 +706,10 @@ class DocketController extends Controller
                     'accessories_discount' => $inputDocketParameters['accessories_discount'], 
                     'rto_discount' => $inputDocketParameters['rto_discount'], 
                     'exchange_discount' => $inputDocketParameters['exchange_discount'],
-                    'additional_discount' => $inputDocketParameters['additional_discount'],
+                    'commission' => $inputDocketParameters['commission'],
+                    'vehicle_discount' => $inputDocketParameters['vehicle_discount'],
+                    'extended_warranty_discount' => $inputDocketParameters['extended_warranty_discount'],
+                    // 'additional_discount' => $inputDocketParameters['additional_discount'],
                     'discount' =>$inputDocketParameters["discount"],
                     'discount_approve' =>$inputDocketParameters["discount_approve"],
                     'total_charges' =>$inputDocketParameters["total_charges"],
