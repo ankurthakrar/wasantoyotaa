@@ -124,7 +124,7 @@ class UserController extends Controller
             $userInfo['team_new_id'] = $userDetails['team_new_id'];
             $userInfo['team_new_name'] = "";
             if($userInfo['team_new_id'] > 0){
-                $team_user = DB::table('teams_user')->where('sub_location_id',$userDetails['team_new_id'])->first();
+                $team_user = DB::table('teams_user')->where('id',$userDetails['team_new_id'])->first();
                 if(!empty($team_user)){
                     $userInfo['team_new_name'] = $team_user->name;
 

@@ -248,7 +248,7 @@ class DocketController extends Controller
                     if(!empty($inputDocketParameters["approval_rto_crtm"]) && empty($inputDocketParameters["approval_rto_crtm_date"])){
                         $rto_user = User::where('team_new_id',$user_data->team_new_id)->where('role','RTO')->first();
                         if(!empty($rto_user)){
-                            $isRtoNotificationExist = DB::table('rto_notifications')->where('sender_id',$user_data->id)->where('receiver_id',$rto_user->id)->where('doc_id',$docketid)->where('type','rto')->first();
+                            $isRtoNotificationExist = DB::table('rto_notifications')->where('receiver_id',$rto_user->id)->where('doc_id',$docketid)->where('type','rto')->first();
                             if(empty($isRtoNotificationExist)){
                                $rto_data = array(
                                     'sender_id'     => $user_data->id,
@@ -268,7 +268,7 @@ class DocketController extends Controller
                     if(!empty($inputDocketParameters["approval_insurance"]) && empty($inputDocketParameters["approval_insurance_date"])){
                         $insurance_user = User::where('team_new_id',$user_data->team_new_id)->where('role','INSURANCE')->first();
                         if(!empty($insurance_user)){
-                            $isRtoNotificationExist = DB::table('rto_notifications')->where('sender_id',$user_data->id)->where('receiver_id',$insurance_user->id)->where('doc_id',$docketid)->where('type','insurance')->first();
+                            $isRtoNotificationExist = DB::table('rto_notifications')->where('receiver_id',$insurance_user->id)->where('doc_id',$docketid)->where('type','insurance')->first();
                             if(empty($isRtoNotificationExist)){
                                $rto_data = array(
                                     'sender_id'     => $user_data->id,
@@ -351,7 +351,7 @@ class DocketController extends Controller
             'accessories_discount as accessories_discount',
             'rto_discount as rto_discount',
             'exchange_discount as exchange_discount',
-            'additional_discount as additional_discount',
+            'commission as commission',
             'docket_details.discount as discount',
             'docket_details.discount_approve as discount_approve',
             'docket_details.total_charges as total_charges',
@@ -1023,7 +1023,7 @@ class DocketController extends Controller
                         if($user_data->team_new_id > 0){
                             $rto_user = User::where('team_new_id',$user_data->team_new_id)->where('role','RTO')->first();
                             if(!empty($rto_user)){
-                                $isRtoNotificationExist = DB::table('rto_notifications')->where('sender_id',$user_data->id)->where('receiver_id',$rto_user->id)->where('doc_id',$id)->where('type','rto')->first();
+                                $isRtoNotificationExist = DB::table('rto_notifications')->where('receiver_id',$rto_user->id)->where('doc_id',$id)->where('type','rto')->first();
                                 if(empty($isRtoNotificationExist)){
                                    $rto_data = array(
                                         'sender_id'     => $user_data->id,
@@ -1051,7 +1051,7 @@ class DocketController extends Controller
                         if($user_data->team_new_id > 0){
                             $insurance_user = User::where('team_new_id',$user_data->team_new_id)->where('role','INSURANCE')->first();
                             if(!empty($insurance_user)){
-                                $isRtoNotificationExist = DB::table('rto_notifications')->where('sender_id',$user_data->id)->where('receiver_id',$insurance_user->id)->where('doc_id',$id)->where('type','rto')->first();
+                                $isRtoNotificationExist = DB::table('rto_notifications')->where('receiver_id',$insurance_user->id)->where('doc_id',$id)->where('type','rto')->first();
                                 if(empty($isRtoNotificationExist)){
                                    $rto_data = array(
                                         'sender_id'     => $user_data->id,
