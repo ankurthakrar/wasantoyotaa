@@ -91,3 +91,4 @@ $router->post('getDataBySuffix', 'MasterController@getDataDetailBySuffix');
 
 $router->post('getSubLocationUser', 'MasterController@getSubLocationUser');
 $router->post('getTeamFromLocation', 'MasterController@getTeamFromLocation');
+$router->post('getReportingUserList', 'MasterController@getReportingUserList');

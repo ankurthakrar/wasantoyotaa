@@ -994,6 +994,7 @@ class MasterController extends Controller
                 $inputParameters['location_id'] = (isset($inputParameters['location_id']) ) ? $inputParameters['location_id'] :$userDetails['location_id'];
                 $inputParameters['sub_location_id'] = (isset($inputParameters['sub_location_id']) ) ? $inputParameters['sub_location_id'] :$userDetails['sub_location_id'];
                 $inputParameters['team_new_id'] = (isset($inputParameters['team_new_id']) ) ? $inputParameters['team_new_id'] :$userDetails['team_new_id'];
+                $inputParameters['reporting_to_id'] = (isset($inputParameters['reporting_to_id']) ) ? $inputParameters['reporting_to_id'] :$userDetails['reporting_to_id'];
 
 		 
 
@@ -1012,6 +1013,7 @@ class MasterController extends Controller
                         'location_id' => $inputParameters['location_id'],
                         'sub_location_id' => $inputParameters['sub_location_id'],
                         'team_new_id' => $inputParameters['team_new_id'],
+                        'reporting_to_id' => $inputParameters['reporting_to_id'],
                         'updated_at' => Carbon\Carbon::now()));
 
 
@@ -1281,6 +1283,39 @@ class MasterController extends Controller
                 $response['code'] = config('constants.API_CODES.SUCCESS');
                 $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
                $response['data']['team_details'] = $teamDetails;
+          
+                return response()->json($response,200);
+            } catch (Exception $ex) {
+                return response()->json(['message' => $ex->getMessage()], 400);
+            }
+    }
+
+    public function getReportingUserList(Request $request)
+    {
+        try {
+                /* Input Parameters */
+                $inputParameters = $this->request['parameters'];  // Input data
+
+                $requiredFields = array('location_id','sub_location_id','team_id');
+            
+                foreach ($requiredFields as $key => $value) {
+                    if (!isset($inputParameters[$value]) || $inputParameters[$value] == '') {
+                        $this->AdditionalFunctions->returnError("Please enter required details.");
+                    }
+                }
+                  
+                $queryResult = DB::table('users')->where('location_id',$inputParameters['location_id'])->where('sub_location_id',$inputParameters['sub_location_id'])->where('team_new_id',$inputParameters['team_id'])->get();
+
+                $userDetails = $this->Corefunctions->convertToArray($queryResult);
+                
+                if( empty( $userDetails ) ){
+                    throw new Exception('User does not exist.',475);
+                }
+
+               
+                $response['code'] = config('constants.API_CODES.SUCCESS');
+                $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
+               $response['data']['user_details'] = $userDetails;
           
                 return response()->json($response,200);
             } catch (Exception $ex) {
