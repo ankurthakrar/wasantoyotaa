@@ -1073,7 +1073,31 @@ class DocketController extends Controller
                     }
                 }; 
 
-                
+                if(isset($this->request["button_type"]) && ($this->request["button_type"] == "approve_docket") && isset($this->request['approve_data'])){
+                    $user_data = User::where('id',$this->request['current_user_id'])->first();
+                    if($user_data->reporting_to_id > 0){
+                        $reporting_user = User::where('id',$user_data->reporting_to_id)->first();
+                        if(!empty($reporting_user)){
+                            $isReportingNotificationExist = DB::table('rto_notifications')->where('receiver_id',$reporting_user->id)->where('doc_id',$id)->where('type','approval')->first();
+                            // if(empty($isReportingNotificationExist)){
+                                $rto_data = array(
+                                    'sender_id'     => $user_data->id,
+                                    'receiver_id'   => $reporting_user->id,
+                                    'doc_id'        => $id,
+                                    'vin_no'        => $inputVehicleParameters["vin_no"],
+                                    'so_name'       => $inputDocketParameters["so_name"],
+                                    'customer_name' => $inputCustomerParameters["customer_name"],
+                                    'model_name'    => $inputVehicleParameters["model"],
+                                    'message'       => $this->request["approve_data"],
+                                    'type'          => 'approval',
+                                    'created_at'    => Carbon\Carbon::now(),
+                                    'updated_at'    => Carbon\Carbon::now(),
+                                );
+                                DB::table('rto_notifications')->insertGetId($rto_data);
+                            // }
+                        }
+                    }
+                };  
               
                 $response['code'] = config('constants.API_CODES.SUCCESS');
                 $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');

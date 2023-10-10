@@ -1309,7 +1309,7 @@ class MasterController extends Controller
                 $userDetails = $this->Corefunctions->convertToArray($queryResult);
                 
                 if( empty( $userDetails ) ){
-                    throw new Exception('User does not exist.',475);
+                    $userDetails = [];
                 }
 
                
