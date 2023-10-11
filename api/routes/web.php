@@ -25,6 +25,7 @@ $router->post('login', 'UserController@login');
 $router->post('rtoNotificationList', 'UserController@rtoNotificationList');
 // $router->post('rtoDocketDateUpdate', 'UserController@rtoDocketDateUpdate');
 $router->post('createStock', 'StockController@addStock');
+$router->post('createStockBulk', 'BulkStockController@addStockBulk');
 $router->post('logout', 'StockController@logout');
 
 $router->post('stockList', 'StockController@getStockList');
