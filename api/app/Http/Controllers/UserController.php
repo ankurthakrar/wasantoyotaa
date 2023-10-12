@@ -131,6 +131,7 @@ class UserController extends Controller
                 }
             }
             $userInfo['reporting_to_id'] = $userDetails['reporting_to_id'];
+            $userInfo['is_have_notificaiton'] = DB::table('rto_notifications')->where('receiver_id',$userDetails['id'])->count() > 0 ? true : false;
             $response["data"]['userdetails'] = $userInfo;
             $response["data"]['accesstoken'] = $tokenGenerate;
             $response['code'] = config('constants.API_CODES.SUCCESS');

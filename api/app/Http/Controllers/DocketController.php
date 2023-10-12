@@ -254,9 +254,11 @@ class DocketController extends Controller
                                     'sender_id'     => $user_data->id,
                                     'receiver_id'   => $rto_user->id,
                                     'doc_id'        => $docketid,
+                                    'doc_no'        => $varDckNo,
                                     'vin_no'        => $inputVehicleParameters["vin_no"],
                                     'so_name'       => $inputDocketParameters["so_name"],
                                     'customer_name' => $inputCustomerParameters["customer_name"],
+                                    'model_name'    => $inputVehicleParameters["model"],
                                     'type'          => 'rto',
                                     'created_at'    => Carbon\Carbon::now(),
                                     'updated_at'    => Carbon\Carbon::now(),
@@ -274,9 +276,11 @@ class DocketController extends Controller
                                     'sender_id'     => $user_data->id,
                                     'receiver_id'   => $insurance_user->id,
                                     'doc_id'        => $docketid,
+                                    'doc_no'        => $varDckNo,
                                     'vin_no'        => $inputVehicleParameters["vin_no"],
                                     'so_name'       => $inputDocketParameters["so_name"],
                                     'customer_name' => $inputCustomerParameters["customer_name"],
+                                    'model_name'    => $inputVehicleParameters["model"],
                                     'type'          => 'insurance',
                                     'created_at'    => Carbon\Carbon::now(),
                                     'updated_at'    => Carbon\Carbon::now(),
@@ -1029,9 +1033,11 @@ class DocketController extends Controller
                                         'sender_id'     => $user_data->id,
                                         'receiver_id'   => $rto_user->id,
                                         'doc_id'        => $id,
+                                        'doc_no'        => $inputDocketParameters["docket_no"],
                                         'vin_no'        => $inputVehicleParameters["vin_no"],
                                         'so_name'       => $inputDocketParameters["so_name"],
                                         'customer_name' => $inputCustomerParameters["customer_name"],
+                                        'model_name'    => $inputVehicleParameters["model"],
                                         'type'          => 'rto',
                                         'created_at'    => Carbon\Carbon::now(),
                                         'updated_at'    => Carbon\Carbon::now(),
@@ -1057,9 +1063,11 @@ class DocketController extends Controller
                                         'sender_id'     => $user_data->id,
                                         'receiver_id'   => $insurance_user->id,
                                         'doc_id'        => $id,
+                                        'doc_no'        => $inputDocketParameters["docket_no"],
                                         'vin_no'        => $inputVehicleParameters["vin_no"],
                                         'so_name'       => $inputDocketParameters["so_name"],
                                         'customer_name' => $inputCustomerParameters["customer_name"],
+                                        'model_name'    => $inputVehicleParameters["model"],
                                         'type'          => 'insurance',
                                         'created_at'    => Carbon\Carbon::now(),
                                         'updated_at'    => Carbon\Carbon::now(),
@@ -1084,6 +1092,7 @@ class DocketController extends Controller
                                     'sender_id'     => $user_data->id,
                                     'receiver_id'   => $reporting_user->id,
                                     'doc_id'        => $id,
+                                    'doc_no'        => $inputDocketParameters["docket_no"],
                                     'vin_no'        => $inputVehicleParameters["vin_no"],
                                     'so_name'       => $inputDocketParameters["so_name"],
                                     'customer_name' => $inputCustomerParameters["customer_name"],
@@ -1099,6 +1108,10 @@ class DocketController extends Controller
                     }
                 };  
               
+                if($this->request["delete_notification_id"] > 0){
+                    DB::table('rto_notifications')->where('id',$this->request["delete_notification_id"])->delete();
+                }
+                
                 $response['code'] = config('constants.API_CODES.SUCCESS');
                 $response['status'] = config('constants.API_CODES.SUCCESS_STATUS');
                 $response['message'] = "Docket data updated successfully.";
