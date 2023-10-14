@@ -67,6 +67,7 @@ $router->post('locationList', 'MasterController@getLocationList');
 $router->post('deleteLocation', 'MasterController@deleteLocationDetails');
 
 $router->post('createDocket', 'DocketController@addDocket');
+$router->post('createDocketBulk', 'BulkStockController@addDocketBulk');
 $router->post('docketList', 'DocketController@getDocketList');
 $router->post('getDocket', 'DocketController@getDocketDetails');
 $router->post('scrapDocket', 'DocketController@scrapDocket');
