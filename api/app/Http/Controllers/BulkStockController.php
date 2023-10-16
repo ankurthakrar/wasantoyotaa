@@ -101,7 +101,7 @@ class BulkStockController extends Controller
                 }
                 foreach ($excelData as $key=>$row) {
                     if (
-                        ($row[2] == null) || ($row[4] == null) || ($row[7] == null) || ($row[6] == null) || ($row[3] == null) || ($row[5] == null) || ($row[8] == null) || ($row[9] == null) || ($row[10] == null) || ($row[12] == null) || ($row[19] == null) || ($row[1] == null)
+                        ($row[1] == null) || ($row[2] == null) || ($row[3] == null) || ($row[4] == null) || ($row[5] == null) || ($row[6] == null) || ($row[7] == null) || ($row[8] == null) || ($row[9] == null) || ($row[10] == null) || ($row[12] == null) || ($row[13] == null) || ($row[14] == null) || ($row[15] == null) || ($row[16] == null) || ($row[17] == null) || ($row[18] == null) || ($row[19] == null)
                     ) {
                         continue;
                     }
@@ -135,7 +135,7 @@ class BulkStockController extends Controller
                         'insurance' =>$row[9],
                         'registration' =>$row[10],
                         'order_source' =>$row[12],
-                        'special_no_by' => $row[11], 
+                        // 'special_no_by' => $row[11], 
                         'cost_of_vehicle' =>$row[19],
                         'so_name' =>$row[1],
                         'dnum' => $dnum,
